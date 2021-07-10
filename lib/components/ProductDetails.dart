@@ -10,7 +10,9 @@ Widget ProductDetails( id,context, description,
     }
     
     ) {
+    var selectedCourt ;
   return Scaffold(
+
     backgroundColor: Color(0xFFF5F6F9),
     appBar: buildAppBar(context, clubName),
     body: Details(
@@ -22,6 +24,8 @@ Widget ProductDetails( id,context, description,
           lieu: lieu,
           clubName:clubName,
           id:id,
+          allCourt:allCourt,
+          selectedCourt:id,
           ),
    
   );

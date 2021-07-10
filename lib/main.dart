@@ -52,7 +52,7 @@ class _BookingAppState extends State<BookingApp> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: (5)),
                         child: SectionTitle(
-                          title: "Location",
+                          title: "Sports",
                           press: () {},
                         ),
                       ),
@@ -91,7 +91,7 @@ class _BookingAppState extends State<BookingApp> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: (5)),
                         child: SectionTitle(
-                          title: "Sports",
+                          title: "Location",
                           press: () {},
                         ),
                       ),
@@ -129,7 +129,7 @@ class _BookingAppState extends State<BookingApp> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: (5)),
                         child: SectionTitle(
-                          title: "Sports",
+                          title: "Tennis",
                           press: () {},
                         ),
                       ),

@@ -12,66 +12,80 @@ class Details extends StatefulWidget {
   final lieu;
   final clubName;
   final id;
-  const Details({
+  final Terrain allCourt;
+
+  int selectedCourt;
+
+  _DetailsState createState() => _DetailsState();
+
+  Details({
     this.description,
     this.imgUrl,
     this.prixday,
     this.prixnight,
     this.title,
     this.lieu,
-    this.clubName, 
+    this.clubName,
     this.id,
+    required this.allCourt,
+    required this.selectedCourt,
   });
-
-  @override
-  _DetailsState createState() => _DetailsState();
 }
 
 class _DetailsState extends State<Details> {
+  select(_id) {
+    setState(() {
+      widget.selectedCourt = _id;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-var selectedCourt =widget.id;
-select(_id){
-  setState(() {
-    selectedCourt=_id;
-  });
-}
-print(("selected=${selectedCourt}"));
+    print(("selected=${widget.clubName}"));
+    // print(("selected=${widget.clubName}"));
+    //  products.where((e) => e.type.toLowerCase() == type.toLowerCase());
+
+    var court = products.firstWhere(
+        (e) => e.clubName.toLowerCase() == widget.clubName.toLowerCase());
+
+    var courtInfo =
+        court.court.firstWhere((element) => element.id == widget.selectedCourt);
+//     print("selectedCourt${selectedCourt}");
+//     var courtInfo=court.court.firstWhere((element) => element.id==selectedCourt);
+// print('object1233333${courtInfo.nomTerrain}');
 
     return ProductImages(
-      imgUrl: widget.imgUrl,
+      imgUrl: courtInfo.imagesTerrain,
       size: size,
-      prixday: widget.prixday,
-      prixnight: widget.prixnight,
-      title: widget.title,
+      prixday: courtInfo.prixday,
+      prixnight: courtInfo.prixnight,
+      title: courtInfo.nomTerrain,
       description: widget.description,
-      lieu: widget.lieu,
+      lieu: courtInfo.nomTerrain,
       clubName: widget.clubName,
-      id:widget.id,
-      selectedCourt:selectedCourt,
-      select:select,
+      id: widget.id,
+      selectedCourt: widget.selectedCourt,
+      select: select,
     );
   }
 }
 
 class ProductImages extends StatefulWidget {
-  const ProductImages(
-      {Key? key,
-      required this.imgUrl,
-      required this.size,
-      required this.description,
-      required this.prixday,
-      required this.prixnight,
-      required this.title,
-      required this.lieu,
-      required this.clubName, 
-      required this.id, 
-      required this.selectedCourt,  required  Function this.select, 
-
-      
-      })
-      : super(key: key);
+  const ProductImages({
+    Key? key,
+    required this.imgUrl,
+    required this.size,
+    required this.description,
+    required this.prixday,
+    required this.prixnight,
+    required this.title,
+    required this.lieu,
+    required this.clubName,
+    required this.id,
+    required this.selectedCourt,
+    required Function this.select,
+  }) : super(key: key);
 
   final imgUrl;
   final Size size;
@@ -83,8 +97,7 @@ class ProductImages extends StatefulWidget {
   final clubName;
   final id;
   final selectedCourt;
-    final Function select;
-
+  final Function select;
 
   @override
   _ProductImagesState createState() => _ProductImagesState();
@@ -97,14 +110,17 @@ class _ProductImagesState extends State<ProductImages> {
   Widget build(BuildContext context) {
     final dataCourt = products.where(
         (e) => e.clubName.toLowerCase() == widget.clubName.toLowerCase());
-           print("id page 1=${widget.selectedCourt}");
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(0),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: Row(
             children: dataCourt.map((type) {
-              return Button(court: type.court,id:widget.id,selected:widget.selectedCourt,select:widget.select);
+              return Button(
+                  court: type.court,
+                  id: widget.id,
+                  selected: widget.selectedCourt,
+                  select: widget.select);
             }).toList(),
           ),
         ),
@@ -258,8 +274,6 @@ class _ProductImagesState extends State<ProductImages> {
     );
   }
 }
-
-
 
 class TopRoundedContainer extends StatelessWidget {
   const TopRoundedContainer({

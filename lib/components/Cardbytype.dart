@@ -52,6 +52,7 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+
       children: data.map((type) {
         return Align(
           alignment: Alignment.centerLeft,
@@ -126,6 +127,8 @@ class Gridview extends StatelessWidget {
         details !="" ?
  
             GridView.count(
+                     scrollDirection: Axis.vertical,
+
               childAspectRatio: (itemWidth / itemHeight)*0.9,
               crossAxisCount: 2,
               children: 
