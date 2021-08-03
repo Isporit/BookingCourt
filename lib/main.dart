@@ -1,6 +1,9 @@
 import 'package:bookingapp/components/Categorie.dart';
+import 'package:bookingapp/components/login.dart';
+// import 'package:bookingapp/components/provider/event_provider.dart';
 import 'package:bookingapp/components/section_title.dart';
 import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
 
 import 'components/serach.dart';
 import 'data/Data.dart';
@@ -8,7 +11,7 @@ import 'data/Data.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: BookingApp(),
+    home: Login(),
   ));
 }
 
@@ -20,7 +23,10 @@ class BookingApp extends StatefulWidget {
 class _BookingAppState extends State<BookingApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+  // => ChangeNotifierProvider(
+  //   create:(context)=>EventProvider(),
+  //   child:
+  return  Scaffold(
         backgroundColor: Color(0xFFF8F8F8),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
@@ -151,7 +157,8 @@ class _BookingAppState extends State<BookingApp> {
             ]),
          
          
-          ]),
-        ));
+          ])
+        )
+    );
   }
 }
