@@ -103,7 +103,6 @@ class _LoginState extends State<Login> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => BookingApp()));
-                    // doLogin(emailController.text ,passwordController.text);
                   },
                   textColor: Colors.white,
                   child: Text(
