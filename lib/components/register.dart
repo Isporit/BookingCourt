@@ -1,6 +1,7 @@
 // import 'package:flushbar/flushbar.dart';
 import 'dart:convert';
 
+import 'package:bookingapp/components/login.dart';
 import 'package:bookingapp/components/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -13,7 +14,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   Duration get loginTime => Duration(milliseconds: timeDilation.ceil() * 2250);
-   String  loginunique="false" ;
+  String loginunique = "false";
 
   final formKey = GlobalKey<FormState>();
 
@@ -22,8 +23,7 @@ class _RegisterState extends State<Register> {
 
   Future<dynamic> createUser(_username, _password) async {
     setState(() {
-           loginunique="false" ;
-
+      loginunique = "false";
     });
     final http.Response response = await http.post(
       url,
@@ -35,24 +35,58 @@ class _RegisterState extends State<Register> {
         'mp': _password,
       }),
     );
-   
-
     switch (response.statusCode) {
-    case 200:
-       setState(() {
-        loginunique = "false";
-      });
-     break;
-     
-     case 400:
-       setState(() {
-        loginunique = "true";
-      });
-      break;
-     case 500:
-      throw Exception('Failed to create user.');
+      case 200:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: const Text('user add with Succès'),
+              actions: <Widget>[
+                // TextButton(
+                //   onPressed: () => Navigator.pop(context, 'Cancel'),
+                //   child: const Text('Cancel'),
+                // ),
+                TextButton(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Login()),
+                    )
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        break;
+
+      case 400:
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: const Text('user existe deja'),
+              actions: <Widget>[
+                // TextButton(
+                //   onPressed: () => Navigator.pop(context, 'Cancel'),
+                //   child: const Text('Cancel'),
+                // ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        break;
+      case 500:
+        throw Exception('Failed to create user.');
     }
-     print(response.statusCode);
+
+    print(response.statusCode);
     print(loginunique);
   }
 
@@ -62,7 +96,6 @@ class _RegisterState extends State<Register> {
       print('on do Register');
 
       final form = formKey.currentState;
-      print(form);
       if (form!.validate()) {
         form.save();
         print(_username);
@@ -97,7 +130,6 @@ class _RegisterState extends State<Register> {
         // ).show(context);
       }
     };
-    print('loginunique  $loginunique');
     return Scaffold(
       appBar: AppBar(
         title: Text('Registration'),
@@ -117,11 +149,13 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                     autofocus: false,
                     validator: (value) {
-                      if( value!.isEmpty){
-                        return 'Please enter email';}
-                      if (loginunique =="true"){
-                       return  'user existe'; }
-                       else return  null;
+                      if (value!.isEmpty) {
+                        return 'Please enter email';
+                      }
+                      if (loginunique == "true") {
+                        return 'user existe';
+                      } else
+                        return null;
                     },
                     onSaved: (value) => _username = value!,
                     decoration: InputDecoration(
@@ -186,8 +220,11 @@ class _RegisterState extends State<Register> {
                   splashColor: Colors.black12,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))),
-                  onPressed: () {
-                    doRegister();
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      var err = doRegister();
+                      print("err$err");
+                    }
                   },
                   textColor: Colors.white,
                   child: Text(

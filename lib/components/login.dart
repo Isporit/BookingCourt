@@ -1,6 +1,9 @@
 import 'package:bookingapp/components/register.dart';
+import 'package:bookingapp/data/Data.dart';
+import 'package:bookingapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -8,23 +11,29 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-   late String _userName, _password;
-final url = Uri.parse('http://192.168.100.8:5000/api/posts');
+  late String _userName, _password;
+  final url = Uri.parse('http://192.168.100.8:5000/api/posts');
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
 
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+  void getData() async {
+    http.Response response =
+        await http.get(url, headers: {'Accept': 'application/json'});
+    print(response.body);
+  }
 
-void  getData() async {
-  http.Response response = await http.get(
-      url,
-      headers: {
-        'Accept' : 'application/json'
-      });
-  print(response.body);
-}
-var data;
   @override
   Widget build(BuildContext context) {
-    var doLogin = () {};
-    getData();
+    var doLogin = (_userName, _password) {
+// Map  data ={
+//   'login':_userName,
+//   'mp':_password
+// };
+//       var response = await Uri.parse('http://192.168.100.8:5000/api/posts',body:data);
+      print("_userName");
+    };
+    // getData();
 
     return Scaffold(
       appBar: AppBar(
@@ -49,6 +58,7 @@ var data;
                   obscureText: false,
                   validator: (value) =>
                       value!.isEmpty ? "pleae entre votre mail" : null,
+                  controller: emailController,
                   onSaved: (value) => _userName = value!,
                   decoration: InputDecoration(
                     prefixIcon: Icon(
@@ -67,8 +77,9 @@ var data;
                 TextFormField(
                   autofocus: false,
                   obscureText: true,
+                  controller: passwordController,
                   validator: (value) =>
-                      value!.isEmpty ? "pleae entre votre mail" : null,
+                      value!.isEmpty ? "pleae entre votre password" : null,
                   onSaved: (value) => _password = value!,
                   decoration: InputDecoration(
                     prefixIcon: Icon(
@@ -90,7 +101,9 @@ var data;
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   onPressed: () {
-                    getData();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => BookingApp()));
+                    // doLogin(emailController.text ,passwordController.text);
                   },
                   textColor: Colors.white,
                   child: Text(
